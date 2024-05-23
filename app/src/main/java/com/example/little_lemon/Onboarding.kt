@@ -27,7 +27,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -61,9 +60,9 @@ fun Onboarding(navController: NavHostController, prefs: SharedPreferences) {
         Text(
             text = "Let's get to know you", modifier = Modifier
                 .fillMaxWidth()
-                .background(color = colorResource(id = R.color.little_lemon_primary_green))
+                .background(color = colorResource(id = R.color.primary_green))
                 .padding(20.dp), textAlign = TextAlign.Center,
-            color = colorResource(id = R.color.little_lemon_highlight_light),
+            color = colorResource(id = R.color.highlight_light),
             fontSize = 48.sp,
             lineHeight = 58.sp
         )
@@ -121,8 +120,8 @@ fun Onboarding(navController: NavHostController, prefs: SharedPreferences) {
                 .fillMaxWidth()
                 .padding(20.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = colorResource(id = R.color.little_lemon_primary_yellow),
-                contentColor = colorResource(id = R.color.little_lemon_highlight_dark)
+                containerColor = colorResource(id = R.color.primary_yellow),
+                contentColor = colorResource(id = R.color.highlight_dark)
             ), shape = RoundedCornerShape(16.dp)
         ) { Text(text = "Register") }
     }

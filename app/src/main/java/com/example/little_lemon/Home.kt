@@ -78,7 +78,7 @@ fun Home(navController: NavHostController, database: LittleLemonDatabase) {
             modifier = Modifier.verticalScroll(rememberScrollState())
         ) {
             Hero(searchPhrase = searchPhrase)
-            MenuItems(data = filterBySearchPhrase(searchPhrase, menu))
+            MenuItems(data = filterSearch(searchPhrase, menu))
         }
     }
 }
@@ -88,7 +88,7 @@ fun Home(navController: NavHostController, database: LittleLemonDatabase) {
 fun Hero(searchPhrase: MutableState<String>) {
     Column(
         modifier = Modifier
-            .background(colorResource(id = R.color.little_lemon_primary_green))
+            .background(colorResource(id = R.color.primary_green))
             .padding(20.dp)
     ) {
         Text(
@@ -96,7 +96,7 @@ fun Hero(searchPhrase: MutableState<String>) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp),
-            color = colorResource(id = R.color.little_lemon_primary_yellow),
+            color = colorResource(id = R.color.primary_yellow),
             fontSize = 48.sp
         )
         Row(verticalAlignment = Alignment.Bottom) {
@@ -108,7 +108,7 @@ fun Hero(searchPhrase: MutableState<String>) {
                     text = "Chicago",
                     modifier = Modifier.padding(bottom = 8.dp),
                     color = colorResource(
-                        id = R.color.little_lemon_highlight_light
+                        id = R.color.highlight_light
                     ),
                     fontSize = 30.sp
                 )
@@ -139,13 +139,14 @@ fun Hero(searchPhrase: MutableState<String>) {
     }
 }
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun MenuItems(data: List<MenuItemDatabase>) {
     val category = remember {
         mutableStateOf("")
     }
 
-    val categorized = filterByCategory(category, data)
+    val categorized = filterCategory(category, data)
 
     Row(
         horizontalArrangement = Arrangement.SpaceEvenly, modifier = Modifier
@@ -159,8 +160,8 @@ fun MenuItems(data: List<MenuItemDatabase>) {
             modifier = Modifier
                 .padding(end = 20.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = colorResource(id = R.color.little_lemon_highlight_light),
-                contentColor = colorResource(id = R.color.little_lemon_highlight_dark)
+                containerColor = colorResource(id = R.color.highlight_light),
+                contentColor = colorResource(id = R.color.highlight_dark)
             ), shape = RoundedCornerShape(16.dp)
         ) {
             if (category.value == "starters")
@@ -176,8 +177,8 @@ fun MenuItems(data: List<MenuItemDatabase>) {
             modifier = Modifier
                 .padding(end = 20.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = colorResource(id = R.color.little_lemon_highlight_light),
-                contentColor = colorResource(id = R.color.little_lemon_highlight_dark)
+                containerColor = colorResource(id = R.color.highlight_light),
+                contentColor = colorResource(id = R.color.highlight_dark)
             ), shape = RoundedCornerShape(16.dp)
         ) {
             if (category.value == "mains")
@@ -193,8 +194,8 @@ fun MenuItems(data: List<MenuItemDatabase>) {
             modifier = Modifier
                 .padding(end = 20.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = colorResource(id = R.color.little_lemon_highlight_light),
-                contentColor = colorResource(id = R.color.little_lemon_highlight_dark)
+                containerColor = colorResource(id = R.color.highlight_light),
+                contentColor = colorResource(id = R.color.highlight_dark)
             ), shape = RoundedCornerShape(16.dp)
         ) {
             if (category.value == "desserts")
@@ -208,8 +209,8 @@ fun MenuItems(data: List<MenuItemDatabase>) {
         Button(
             onClick = { category.value = if (category.value == "drinks") "" else "drinks" },
             colors = ButtonDefaults.buttonColors(
-                containerColor = colorResource(id = R.color.little_lemon_highlight_light),
-                contentColor = colorResource(id = R.color.little_lemon_highlight_dark)
+                containerColor = colorResource(id = R.color.highlight_light),
+                contentColor = colorResource(id = R.color.highlight_dark)
             ), shape = RoundedCornerShape(16.dp)
         ) {
             if (category.value == "drinks")
@@ -224,41 +225,39 @@ fun MenuItems(data: List<MenuItemDatabase>) {
     Column(modifier = Modifier
         .fillMaxSize()) {
         for (index in categorized.indices){
-            MenuItem(item = categorized[index])
+           var item = categorized[index]
+            Row(modifier = Modifier.padding(20.dp), verticalAlignment = Alignment.Bottom) {
+                Column(modifier = Modifier.weight(0.66f)) {
+                    Text(text = item.title, fontWeight = FontWeight.Bold)
+                    Text(
+                        text = item.description,
+                        color = colorResource(id = R.color.primary_green),
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Normal,
+                        lineHeight = 24.sp,
+                        modifier = Modifier.padding(vertical = 8.dp),
+                        maxLines = 2
+                    )
+                    Text(
+                        text = "$${item.price}",
+                        color = colorResource(id = R.color.primary_green),
+                        fontSize = 16.sp
+                    )
+                }
+                GlideImage(
+                    model = item.image.toUri(),
+                    contentDescription = "A picture of the dish.",
+                    modifier = Modifier
+                        .weight(0.34f)
+                        .clip(shape = RoundedCornerShape(16.dp))
+                )
+            }
         }
     }
 }
 
-@OptIn(ExperimentalGlideComposeApi::class)
-@Composable
-fun MenuItem(item: MenuItemDatabase) {
-    Row(modifier = Modifier.padding(20.dp), verticalAlignment = Alignment.Bottom) {
-        Column(modifier = Modifier.weight(0.66f)) {
-            Text(text = item.title, fontWeight = FontWeight.Bold)
-            Text(
-                text = item.description,
-                color = colorResource(id = R.color.little_lemon_primary_green),
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Normal,
-                lineHeight = 24.sp,
-                modifier = Modifier.padding(vertical = 8.dp),
-                maxLines = 2
-            )
-            Text(
-                text = "$${item.price}",
-                color = colorResource(id = R.color.little_lemon_primary_green),
-                fontSize = 16.sp
-            )
-        }
-        GlideImage(
-            model = item.image.toUri(),
-            contentDescription = "A picture of the dish.",
-            modifier = Modifier
-                .weight(0.34f)
-                .clip(shape = RoundedCornerShape(16.dp))
-        )
-    }
-}
+
+
 
 //@Preview(showBackground = true)
 //@Composable
@@ -267,7 +266,7 @@ fun MenuItem(item: MenuItemDatabase) {
 //        //Home()
 //    }
 //}
-fun filterBySearchPhrase(
+fun filterSearch(
     searchPhrase: MutableState<String>,
     menu: List<MenuItemDatabase>
 ): List<MenuItemDatabase> {
@@ -280,7 +279,7 @@ fun filterBySearchPhrase(
     }
 }
 
-fun filterByCategory(category: MutableState<String>, data: List<MenuItemDatabase>): List<MenuItemDatabase> {
+fun filterCategory(category: MutableState<String>, data: List<MenuItemDatabase>): List<MenuItemDatabase> {
     return if (category.value.isBlank()) {
         data
     } else {

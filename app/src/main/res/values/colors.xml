@@ -8,10 +8,10 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="little_lemon_primary_green">#FF495E57</color>
-    <color name="little_lemon_primary_yellow">#FFF4CE14</color>
-    <color name="little_lemon_secondary_dark">#FFEE9972</color>
-    <color name="little_lemon_secondary_light">#FFFBDABB</color>
-    <color name="little_lemon_highlight_light">#FFEDEFEE</color>
-    <color name="little_lemon_highlight_dark">#FF333333</color>
+    <color name="primary_green">#FF495E57</color>
+    <color name="primary_yellow">#FFF4CE14</color>
+    <color name="secondary_dark">#FFEE9972</color>
+        <color name="secondary_light">#FFFBDABB</color>
+    <color name="highlight_light">#FFEDEFEE</color>
+    <color name="highlight_dark">#FF333333</color>
 </resources>
